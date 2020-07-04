@@ -1,8 +1,7 @@
 import React from 'react'
 
 function FetchPopularRepos(language) {
-  const encodedURI = encodedURI(`https://api.github.com/search/repositories?q=stars
-    :>1+language:${language}&sort=stars&order=desc&type=Repositories`)
+  const encodedURI = encodedURI(`https://api.github.com/search/repositories?q=stars:>1+language:${language}&sort=stars&order=desc&type=Repositories`)
 
   return fetch(encodedURI)
     .then((data) => data.json())

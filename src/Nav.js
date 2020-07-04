@@ -8,7 +8,10 @@ function Nav(props) {
       <ul>
         {
           languages.map((lang) => (
-            <li key={lang} onClick={() => props.onSelectLang(lang)}>
+            <li 
+              key={lang} 
+              onClick={() => props.onSelectLanguage(lang)}
+            >
               {lang}
             </li>
           ))

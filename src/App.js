@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Loading from './Loading'
 import Nav from './Nav'
 
 export class App extends Component {
@@ -12,6 +13,25 @@ export class App extends Component {
     }
 
     this.handleSelectLanguage = this.handleSelectLanguage.bind(this)
+    this.fetchRepos = this.fetchRepos.bind(this)
+  }
+
+  componentDidMount() {
+    this.fetchRepos(this.state.activeLanguage)
+  }
+
+  fetchRepos(lang) {
+    this.setState({
+      loading: true
+    })
+
+    window.API.fetchPopularRepos(lang)
+      .then((repos) => {
+        this.setState({
+          loading: false,
+          repos
+        })
+      }) 
   }
 
   handleSelectLanguage(lang) {
@@ -23,8 +43,15 @@ export class App extends Component {
   render() {
     return (
       <div>
-        <Nav onSelectLang={this.handleSelectLanguage}/>
-        <h2> Language: {this.state.activeLanguage} </h2>
+        <Nav onSelectLanguage={this.handleSelectLanguage}/>
+
+        {
+          (this.state.loading === true)
+            ? <Loading />
+            : <div> 
+                {this.state.activeLanguage}
+              </div>
+        }
       </div>
     )
   }
