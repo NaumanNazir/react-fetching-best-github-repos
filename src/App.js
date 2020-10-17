@@ -1,57 +1,53 @@
 import React, { Component } from 'react'
-import Loading from './Loading'
-import Nav from './Nav'
 
-export class App extends Component {
-  constructor(props) {
-    super(props)
+// import Loading from './Loading'
+import Nav from './components/Nav/Nav'
+import axios from 'axios'
+import Repos from './components/Repos/Repos'
 
-    this.state = {
-      repos: [],
-      activeLanguage: "all",
-      loading: true
-    }
-
-    this.handleSelectLanguage = this.handleSelectLanguage.bind(this)
-    this.fetchRepos = this.fetchRepos.bind(this)
+class App extends Component {
+  state = {
+    repos: [],
+    activeLanguage: "all",
+    loading: true
   }
 
   componentDidMount() {
-    this.fetchRepos(this.state.activeLanguage)
-  }
-
-  fetchRepos(lang) {
-    this.setState({
-      loading: true
+    axios.get(`https://api.github.com/search/repositories?q=stars:>1+language:${this.activeLanguage}&sort=stars&order=desc&type=Repositories`)
+    .then(response => {
+      this.setState({ 
+        repos: response.data.items,     
+      })
     })
-
-    window.API.fetchPopularRepos(lang)
-      .then((repos) => {
-        this.setState({
-          loading: false,
-          repos
-        })
-      }) 
+    .catch(error => {
+      console.log(error)
+    })
   }
 
-  handleSelectLanguage(lang) {
+  handleSelectLanguage = (lang) => {
     this.setState({
       activeLanguage: lang
     })
+
+    console.log(lang)
   }
 
   render() {
     return (
-      <div>
-        <Nav onSelectLanguage={this.handleSelectLanguage}/>
+      <div className="container">
+        <Nav onSelectLanguage={this.handleSelectLanguage} />
+        <Repos 
+          activeLanguage={this.activeLanguage} 
+          repos={this.state.repos}
+        />
 
-        {
+        {/* {
           (this.state.loading === true)
             ? <Loading />
-            : <div> 
-                {this.state.activeLanguage}
-              </div>
-        }
+            : <div>
+              {this.state.activeLanguage}
+            </div>
+        } */}
       </div>
     )
   }

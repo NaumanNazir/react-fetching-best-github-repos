@@ -1,12 +1,8 @@
 import React, { Component } from 'react'
 
-export class Loading extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      text: "Loading..."
-    }
+class Loading extends Component {
+  state = {
+    text: "Loading..."
   }
 
   componentDidMount() {

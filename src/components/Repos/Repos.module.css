@@ -1,0 +1,15 @@
+.ReposContainer {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  list-style-type: none;
+  padding: 0;
+}
+
+.RepoTile {
+  width: 220px;
+  margin: 10px;
+  padding: 20px;
+  background-color: #eee;
+  border-radius: 10px;
+}
