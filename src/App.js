@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-// import Loading from './Loading'
+import Loading from './components/Loading'
 import Nav from './components/Nav/Nav'
 import axios from 'axios'
 import Repos from './components/Repos/Repos'
@@ -13,10 +13,23 @@ class App extends Component {
   }
 
   componentDidMount() {
-    axios.get(`https://api.github.com/search/repositories?q=stars:>1+language:${this.activeLanguage}&sort=stars&order=desc&type=Repositories`)
+    this.fetchRepos(this.state.activeLanguage)
+    // console.log("did mount")
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.activeLanguage !== this.state.activeLanguage) {
+      this.fetchRepos(this.state.activeLanguage)
+    }
+    // console.log("did update")
+  }
+
+  fetchRepos = (language) => {
+    axios.get(`https://api.github.com/search/repositories?q=stars:>1+language:${language}&sort=stars&order=desc&type=Repositories`)
     .then(response => {
       this.setState({ 
-        repos: response.data.items,     
+        repos: response.data.items,
+        loading: false,     
       })
     })
     .catch(error => {
@@ -26,28 +39,24 @@ class App extends Component {
 
   handleSelectLanguage = (lang) => {
     this.setState({
-      activeLanguage: lang
+      activeLanguage: lang,
+      loading: true
     })
 
     console.log(lang)
   }
 
   render() {
+    const repos = (
+      (!!this.state.loading )
+        ? <Loading />
+        : <Repos repos={this.state.repos} />
+      )
+
     return (
       <div className="container">
         <Nav onSelectLanguage={this.handleSelectLanguage} />
-        <Repos 
-          activeLanguage={this.activeLanguage} 
-          repos={this.state.repos}
-        />
-
-        {/* {
-          (this.state.loading === true)
-            ? <Loading />
-            : <div>
-              {this.state.activeLanguage}
-            </div>
-        } */}
+        {repos}
       </div>
     )
   }

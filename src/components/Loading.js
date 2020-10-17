@@ -25,8 +25,8 @@ class Loading extends Component {
 
   render() {
     return (
-      <div>
-        {this.state.text}
+      <div style={{textAlign:"center"}}>
+        <h3> {this.state.text} </h3>
       </div>
     )
   }

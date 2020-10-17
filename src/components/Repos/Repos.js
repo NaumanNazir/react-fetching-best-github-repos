@@ -14,7 +14,7 @@ function Repos(props) {
             <li key={repo.id} className={classes.RepoTile}> 
               <p> Name: {repo.name} </p>
               <p> Langauge: {repo.language} </p>
-              <p> URL: <a href={repo.clone_url}> Link </a> </p> 
+              <p> URL: <a href={repo.html_url}> Link </a> </p> 
               <p> Stars: {repo.stargazers_count} </p>
             </li>
             )
